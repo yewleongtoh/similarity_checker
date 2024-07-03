@@ -2,7 +2,7 @@ Metadata-Version: 2.1
 Name: similarity_checker
 Version: 0.0.1
 Summary: The SimilarityChecker module determines the similarity between two items.
-Home-page: GITHUB REPOSITORY LINK
+Home-page: https://github.com/yewleongtoh/similarity_checker
 Author: Toh Yew Leong
 Author-email: yewleongtoh@gmail.com
 Classifier: Programming Language :: Python :: 3
