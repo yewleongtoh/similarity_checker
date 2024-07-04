@@ -1,13 +1,19 @@
 ## Installation
 
+To use this module, you need to have Python >=3.7 installed on your system. You can do this using pip:
+
 Run 
 ```pip install llm-similarity-checker```
 
-This module includes three classes:
 
-1. **AnalysisMatcher**
-2. **NumericMatcher**
-3. **AltairGraphComparer**
+## Overview
+
+This module is designed to handle various tasks related to sentence similarity, numeric extraction and comparison, and Altair graph comparison. The core functionality includes:
+
+- Comparing sentences using transformer models and computing similarity scores.
+- Extracting and matching numerical values within strings to target numerical values.
+- Comparing two Altair graphs to determine their similarity.
+
 
 ### AnalysisMatcher
 
@@ -17,24 +23,21 @@ Example:
 ```python
 from similarity_checker import AnalysisMatcher
 
-reference = "Based on the visualization 'Sale Price vs. Unit Profit' and 'Bulk Price vs. Bulk Profit', it appears that there's a positive correlation between price and profit for both individual unit sales and bulk sales."
+reference = "This indicates a statistically significant difference in the average incomes of males and females in the dataset."
 
-sentence1 = "Both pricing strategies do not have positive linear relationship with their respective revenues."
-sentence2 = "Both pricing strategies have positive linear relationship with their respective revenues."
+target1 = "We can conclude there is no statistically significant difference in the average incomes of males and females in this dataset."
+target2 = "We can conclude there is statistically significant difference in the average incomes of males and females in this dataset."
 
 # Initialize the AnalysisMatcher
 matcher = AnalysisMatcher()
 
-# Perform matches for answer_query1
-match1 = matcher.match(reference, sentence1)
-match2 = matcher.match(reference, sentence2)
+# Perform matching
+result1_score, result1_match = matcher.match(reference, target1)
+result2_score, result2_match = matcher.match(reference, target2)
 
 # Print results
-print("Match results for sentence1:")
-print(match1)
-
-print("\nMatch results for sentence2:")
-print(match2)
+print(f"Match result for target 1: Score = {result1_score}, Match = {result1_match}")
+print(f"Match result for target 2: Score = {result2_score}, Match = {result2_match}")
 ```
 
 Output:
@@ -60,8 +63,17 @@ target2 = 0
 
 matcher = NumericMatcher()
 
-print(matcher.match(sentence, target1))
-print(matcher.match(sentence, target2))
+result1_match = matcher.match(sentence, target1)
+result2_match = matcher.match(sentence, target2)
+
+print(f"Match result for target 1: Match = {result1_match}")
+print(f"Match result for target 2: Match = {result2_match}")
+```
+
+Output:
+```bash
+Match result for target 1: Match = True
+Match result for target 2: Match = False
 ```
 
 ### AltairGraphComparer
@@ -75,5 +87,14 @@ chart1 = "{\"config\": {\"view\": {\"continuousWidth\": 400, \"continuousHeight\
 chart2 = "{\"config\": {\"view\": {\"continuousWidth\": 400, \"continuousHeight\": 300}}, \"data\": {\"name\": \"data-71fd4bd6411150f723ef9e15bf55c9ea\"}, \"mark\": \"bar\", \"encoding\": {\"tooltip\": [{\"field\": \"month\", \"type\": \"nominal\"}, {\"field\": \"booking_duration\", \"type\": \"quantitative\"}], \"x\": {\"axis\": {\"labelAngle\": -45, \"title\": \"Month\"}, \"field\": \"month\", \"sort\": null, \"type\": \"nominal\"}, \"y\": {\"field\": \"booking_duration\", \"title\": \"Average Booking Duration (Days)\", \"type\": \"quantitative\"}}, \"selection\": {\"selector001\": {\"type\": \"interval\", \"bind\": \"scales\", \"encodings\": [\"x\", \"y\"]}}, \"title\": \"Average Booking Duration by Month\", \"$schema\": \"https://vega.github.io/schema/vega-lite/v4.17.0.json\", \"datasets\": {\"data-71fd4bd6411150f723ef9e15bf55c9ea\": [{\"month\": \"January\", \"booking_duration\": 1.8288770053475936, \"month_order\": 0}]}}"
 
 matcher = AltairGraphComparer()
-matcher.match(chart1, chart2)
+result_match = matcher.match(chart1, chart2)
+
+print(f"Match result for target: Match = {result_match}")
+```
+
+Output:
+```bash
+Differences in dataset values:
+Dataset[0].booking_duration: -778.581308411215 != 1.8288770053475936
+Match result for target: Match = False
 ```
