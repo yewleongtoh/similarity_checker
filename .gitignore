@@ -1,0 +1,6 @@
+*pyc
+.venv
+.vscode/
+trained_models/
+__pycache__/
+main.py
